@@ -23,15 +23,15 @@ export default function Home() {
         const elementList = [];
         for (const r in response) {
           const element = (
-            <tr key={response[r].key}>
+            <tr key={response[r].id}>
               <td className="px-6 py-4 text-sm font-medium text-slate-400	whitespace-nowrap">
                 {new Date(response[r].created_at).toLocaleTimeString()}
               </td>
               <td className="px-6 py-4 text-sm text-slate-400 whitespace-nowrap">
-                {response[r].userName}
+                {response[r].user_name}
               </td>
               <td className="px-6 py-4 text-sm text-slate-400 whitespace-nowrap">
-                {response[r].fullText ? response[r].fullText : response[r].text}
+                {response[r].full_text ? response[r].full_text : response[r].text}
               </td>
             </tr>
           );
