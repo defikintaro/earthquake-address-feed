@@ -13,7 +13,7 @@ export default function Home() {
   const [tweets, setTweets] = useState([]);
 
   useEffect(() => {
-    var _ws = new WebSocket("ws://localhost:8080");
+    var _ws = new WebSocket("wss://earthquakefeed.heroesofnft.com");
     setWs(_ws);
 
     _ws.onmessage = function (event) {
