@@ -50,8 +50,8 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      <h2 className="text-3xl font-bold underline">{dataFeed}</h2>
+      <h2 className="text-3xl font-bold underline">This page is intended to filter out the tweets with addresses</h2>
+      {/* <h2 className="text-3xl font-bold underline">{dataFeed}</h2> */}
       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="p-1.5 w-full inline-block align-middle">
