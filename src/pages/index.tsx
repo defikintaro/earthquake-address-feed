@@ -3,14 +3,14 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const [dataFeed, setDataFeed] = useState("");
   const [ws, setWs] = useState<WebSocket>();
 
-  const [tweets, setTweets] = useState([]);
+  const [tweets, setTweets] = useState([] as ReactElement[]);
 
   useEffect(() => {
     var _ws = new WebSocket("wss://earthquakefeed.heroesofnft.com");
@@ -20,7 +20,7 @@ export default function Home() {
       try {
         const response: Array<any> = JSON.parse(event.data);
 
-        const elementList = [];
+        const elementList: Array<ReactElement> = [];
         for (const r in response) {
           const element = (
             <tr key={response[r].id}>
@@ -31,7 +31,9 @@ export default function Home() {
                 {response[r].user_name}
               </td>
               <td className="px-6 py-4 text-sm text-slate-400 whitespace-nowrap">
-                {response[r].full_text ? response[r].full_text : response[r].text}
+                {response[r].full_text
+                  ? response[r].full_text
+                  : response[r].text}
               </td>
             </tr>
           );
