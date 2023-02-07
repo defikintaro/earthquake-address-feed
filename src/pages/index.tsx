@@ -30,7 +30,7 @@ export default function Home() {
               <td className="px-6 py-4 text-sm text-slate-400 whitespace-nowrap">
                 {response[r].user_name}
               </td>
-              <td className="px-6 py-4 text-sm text-slate-400 whitespace-nowrap">
+              <td className="px-6 py-4 text-sm text-slate-400 flex-wrap">
                 {response[r].full_text
                   ? response[r].full_text
                   : response[r].text}
