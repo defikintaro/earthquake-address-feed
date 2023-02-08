@@ -9,12 +9,21 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   const [dataFeed, setDataFeed] = useState("");
   const [ws, setWs] = useState<WebSocket>();
+  const [reconnect, setReconnect] = useState<number>(0);
 
   const [tweets, setTweets] = useState([] as ReactElement[]);
 
   useEffect(() => {
     var _ws = new WebSocket("wss://earthquakefeed.heroesofnft.com");
-    setWs(_ws);
+
+    _ws.onclose = function (event) {
+      console.log("websocket connection has been closed");
+    };
+
+    _ws.onerror = function (event) {
+      console.log("RECONNECTING, WebSocket error: ", event);
+      setReconnect((prev) => prev++);
+    };
 
     _ws.onmessage = function (event) {
       try {
@@ -46,12 +55,17 @@ export default function Home() {
 
       //setDataFeed(event.data.toString());
     };
-  }, []);
+
+    setWs(_ws);
+  }, [reconnect]);
 
   return (
     <>
-      <h2 className="text-3xl font-bold underline">This page is intended to filter out the tweets with addresses</h2>
+      <h2 className="text-3xl font-bold underline">
+        This page is intended to filter out the tweets with addresses
+      </h2>
       {/* <h2 className="text-3xl font-bold underline">{dataFeed}</h2> */}
+
       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="p-1.5 w-full inline-block align-middle">
