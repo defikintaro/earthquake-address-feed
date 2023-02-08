@@ -4,6 +4,7 @@ import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 
 import { ReactElement, useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
@@ -14,49 +15,44 @@ export default function Home() {
   const [tweets, setTweets] = useState([] as ReactElement[]);
 
   useEffect(() => {
-    var _ws = new WebSocket("wss://earthquakefeed.heroesofnft.com");
+    var socket = io("wss://earthquakefeed.heroesofnft.com", { transports: ["websocket"] });
 
-    _ws.onclose = function (event) {
-      console.log("websocket connection has been closed");
-    };
+    socket.on("connect", function () {
+      const engine = socket.io.engine;
 
-    _ws.onerror = function (event) {
-      console.log("RECONNECTING, WebSocket error: ", event);
-      setReconnect((prev) => prev++);
-    };
+      console.log("connected!");
+      socket.emit("greet", { message: "Hello Mr.Server!" });
 
-    _ws.onmessage = function (event) {
-      try {
-        const response: Array<any> = JSON.parse(event.data);
+      engine.once("upgrade", () => {
+        // called when the transport is upgraded (i.e. from HTTP long-polling to WebSocket)
+        console.log(engine.transport.name); // in most cases, prints "websocket"
+      });
+    });
 
+    socket.on("msg_go", (message) => {
+      const response: Array<any> = JSON.parse(message);
+
+      if (response.length) {
         const elementList: Array<ReactElement> = [];
-        for (const r in response) {
-          const element = (
-            <tr key={response[r].id}>
-              <td className="px-2 py-4 text-sm text-slate-400	whitespace-nowrap">
-                {new Date(response[r].created_at).toLocaleTimeString()}
-              </td>
-              <td className="px-2 py-4 text-sm text-slate-400 whitespace-nowrap">
-                {response[r].user_name}
-              </td>
-              <td className="px-8 py-4 text-sm text-slate-400 flex-wrap">
-                {response[r].full_text
-                  ? response[r].full_text
-                  : response[r].text}
-              </td>
-            </tr>
-          );
-          elementList.push(element);
-        }
+
+        const element = (
+          <tr key={response[0].id}>
+            <td className="px-2 py-4 text-sm text-slate-400	whitespace-nowrap">
+              {new Date(response[0].created_at).toLocaleTimeString()}
+            </td>
+            <td className="px-2 py-4 text-sm text-slate-400 whitespace-nowrap">
+              {response[0].user_name}
+            </td>
+            <td className="px-8 py-4 text-sm text-slate-400 flex-wrap">
+              {response[0].full_text ? response[0].full_text : response[0].text}
+            </td>
+          </tr>
+        );
+        elementList.push(element);
+
         setTweets((oldList) => [...oldList, ...elementList]);
-      } catch (error) {
-        setDataFeed(event.data.toString());
       }
-
-      //setDataFeed(event.data.toString());
-    };
-
-    setWs(_ws);
+    });
   }, [reconnect]);
 
   return (
