@@ -24,13 +24,13 @@ export default function Home() {
         for (const r in response) {
           const element = (
             <tr key={response[r].id}>
-              <td className="px-6 py-4 text-sm font-medium text-slate-400	whitespace-nowrap">
+              <td className="px-2 py-4 text-sm text-slate-400	whitespace-nowrap">
                 {new Date(response[r].created_at).toLocaleTimeString()}
               </td>
-              <td className="px-6 py-4 text-sm text-slate-400 whitespace-nowrap">
+              <td className="px-2 py-4 text-sm text-slate-400 whitespace-nowrap">
                 {response[r].user_name}
               </td>
-              <td className="px-6 py-4 text-sm text-slate-400 flex-wrap">
+              <td className="px-8 py-4 text-sm text-slate-400 flex-wrap">
                 {response[r].full_text
                   ? response[r].full_text
                   : response[r].text}
@@ -52,6 +52,33 @@ export default function Home() {
     <>
       <h2 className="text-3xl font-bold underline">This page is intended to filter out the tweets with addresses</h2>
       {/* <h2 className="text-3xl font-bold underline">{dataFeed}</h2> */}
+      <table className="table-auto">
+  <thead>
+    <tr>
+      <th>Song</th>
+      <th>Artist</th>
+      <th>Year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
+      <td>Malcolm Lockyer</td>
+      <td>1961</td>
+    </tr>
+    <tr>
+      <td>Witchy Woman</td>
+      <td>The Eagles</td>
+      <td>1972</td>
+    </tr>
+    <tr>
+      <td>Shining Star</td>
+      <td>Earth, Wind, and Fire</td>
+      <td>1975</td>
+    </tr>
+  </tbody>
+</table>
+
       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="p-1.5 w-full inline-block align-middle">
@@ -69,6 +96,7 @@ export default function Home() {
                       scope="col"
                       className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
                     >
+                      <a href="">tweet</a>
                       Username
                     </th>
                     <th
@@ -76,18 +104,6 @@ export default function Home() {
                       className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
                     >
                       Tweet
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                    >
-                      Edit
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                    >
-                      Delete
                     </th>
                   </tr>
                 </thead>
